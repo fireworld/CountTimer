@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">CountTimerDemo</string>
+    <string name="btn_start">start</string>
+    <string name="btn_pause">pause</string>
+    <string name="btn_cancel">cancel</string>
+    <string name="btn_restart">continue</string>
+    <string name="tv_count_timer">Count Timer</string>
+    <string name="btn_to_simple_count_timer">to simple count timer</string>
+    <string name="tv_simple_count_timer">Simple Count Timer</string>
+</resources>
