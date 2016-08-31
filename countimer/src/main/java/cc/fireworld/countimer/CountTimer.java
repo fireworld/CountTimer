@@ -31,7 +31,7 @@ public class CountTimer<V extends TextView> {
     public static final int STATE_GOING = 1;
 
     private int mTotalCount = 60; // 倒计时总计数
-    private int mCount = mTotalCount; // 倒计时计数
+    private int mCount = mTotalCount; // 当前倒计时计数
 
     private int mInterval = 1000; // 倒计时计数间隔时间, 以毫秒为单位
     @State
@@ -48,8 +48,7 @@ public class CountTimer<V extends TextView> {
      * @param v 显示倒计时计数的 View, 不能为空
      */
     public CountTimer(@NonNull V v) {
-        checkNull(v);
-        mView = v;
+        this(v, -1, -1);
     }
 
     /**
@@ -57,10 +56,7 @@ public class CountTimer<V extends TextView> {
      * @param totalCount 倒计时总计数, 须大于 0
      */
     public CountTimer(@NonNull V v, int totalCount) {
-        this(v);
-        if (totalCount > 0) {
-            mTotalCount = totalCount;
-        }
+        this(v, totalCount, -1);
     }
 
     /**
@@ -71,7 +67,10 @@ public class CountTimer<V extends TextView> {
      * @param intervalInMilliseconds 倒计时计数间隔时间, 须大于 0, 以毫秒为单位
      */
     public CountTimer(@NonNull V v, int totalCount, int intervalInMilliseconds) {
-        this(v, totalCount);
+        mView = checkNotNull(v, "v == null");
+        if (totalCount > 0) {
+            mTotalCount = totalCount;
+        }
         if (intervalInMilliseconds > 0) {
             mInterval = intervalInMilliseconds;
         }
@@ -137,8 +136,7 @@ public class CountTimer<V extends TextView> {
      * @param v 显示倒计时计数的 View, 不能为空
      */
     public void setView(@NonNull V v) {
-        checkNull(v);
-        mView = v;
+        mView = checkNotNull(v, "v == null");
     }
 
     /**
@@ -237,12 +235,6 @@ public class CountTimer<V extends TextView> {
         mView.setText(mViewTextBak);
     }
 
-    private static void checkNull(Object o) {
-        if (o == null) {
-            throw new IllegalArgumentException("Can not be null.");
-        }
-    }
-
     /**
      * 倒计时计数监听接口
      *
@@ -292,5 +284,12 @@ public class CountTimer<V extends TextView> {
     @IntDef({CountTimer.STATE_CANCEL, CountTimer.STATE_GOING, CountTimer.STATE_PAUSE})
     @Retention(RetentionPolicy.SOURCE)
     public @interface State {
+    }
+
+    private static <T> T checkNotNull(T t, String msg) {
+        if (t == null) {
+            throw new NullPointerException(msg);
+        }
+        return t;
     }
 }
